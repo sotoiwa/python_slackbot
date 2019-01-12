@@ -1,0 +1,3 @@
+kubernetes
+prettytable
+slackbot
