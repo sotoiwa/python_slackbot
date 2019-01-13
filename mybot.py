@@ -14,10 +14,10 @@ def mention_hello(message):
     message.reply('こんにちは！')
 
 
-# kubectlに反応する
-@listen_to('kubectl', re.IGNORECASE)
-def listen_kubectl(message):
-    message.reply('kubectlかっこいい！')
+# kubernetesに反応する
+@listen_to('kubernetes', re.IGNORECASE)
+def listen_kubernetes(message):
+    message.reply('kubernetesかっこいい！')
     message.react('+1')
 
 
@@ -28,9 +28,9 @@ def listen_helm(message):
     message.react('+1')
 
 
-# kubectl get pod
-@respond_to(r'^kubectl\s+get\s+(po|pod|pods)\s+(-n|--namespace)\s+(.*)$')
-def mention_kubectl_get_po(message, arg2, arg3, namespace):
+# get pod
+@respond_to(r'^get\s+(po|pod|pods)\s+(-n|--namespace)\s+(.*)$')
+def mention_get_po(message, arg2, arg3, namespace):
 
     # kubernetes上で動いているかを環境変数から判断する
     if os.getenv('KUBERNETES_SERVICE_HOST'):
@@ -57,9 +57,9 @@ def mention_kubectl_get_po(message, arg2, arg3, namespace):
     message.reply(msg)
 
 
-# kubectl get ns
-@respond_to(r'^kubectl\s+get\s+(ns|namespace|namespaces)$')
-def mention_kubectl_get_ns(message, arg2):
+# get ns
+@respond_to(r'^get\s+(ns|namespace|namespaces)$')
+def mention_get_ns(message, arg2):
 
     # kubernetes上で動いているかを環境変数から判断する
     if os.getenv('KUBERNETES_SERVICE_HOST'):
