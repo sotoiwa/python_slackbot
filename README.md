@@ -19,6 +19,12 @@ pip install prettytable
 pip install slackbot
 ```
 
+APIトークンを`export`する。
+
+```
+export SLACKBOT_API_TOKEN=hogehoge
+```
+
 Botを起動する。
 
 ```shell
@@ -30,8 +36,8 @@ python run.py
 イメージをビルドする。
 
 ```shell
-docker build -t sotoiwa540/kubebot:1.0 .
-docker push sotoiwa540/kubebot:1.0
+docker build -t sotoiwa540/slackbot:1.0 .
+docker push sotoiwa540/slackbot:1.0
 ```
 
 ローカルで実行する場合は、`HOME/.kube/config`から認証情報を読み込むが、KubernetesでPodとして実行する場合はServiceAccountの権限で実行するので、ClusterRoleとClusterRoleBindingを作成する。
@@ -59,7 +65,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: sugi
+  namespace: default
 roleRef:
   kind: ClusterRole
   name: slackbot
@@ -101,7 +107,7 @@ spec:
     spec:
       containers:
       - name: slackbot
-        image: sotoiwa540/kubebot:1.0
+        image: sotoiwa540/slackbot:1.0
         imagePullPolicy: Always
         env:
         - name: SLACKBOT_API_TOKEN
