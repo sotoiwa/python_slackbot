@@ -28,11 +28,11 @@ def listen_helm(message):
 
 # kubectl
 @respond_to(r'^kubectl (.*)')
-def mention_kubectl(message, command):
+def mention_kubectl(message, kubectl_args):
 
     try:
-        completed_process = subprocess.run('kubectl {}'.format(command),
-                                           shell=True,
+        cmd = 'kubectl {}'.format(kubectl_args)
+        completed_process = subprocess.run(cmd.split(),
                                            check=True,
                                            capture_output=True)
         result_str = completed_process.stdout.decode('utf-8')
