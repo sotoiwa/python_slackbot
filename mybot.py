@@ -1,8 +1,8 @@
 import re
 import subprocess
 
-from slackbot.bot import respond_to
 from slackbot.bot import listen_to
+from slackbot.bot import respond_to
 
 
 # こんにちはに応答する
