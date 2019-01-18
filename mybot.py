@@ -1,8 +1,6 @@
-import os
 import re
+import subprocess
 
-from kubernetes import client, config
-import prettytable
 from slackbot.bot import respond_to
 from slackbot.bot import listen_to
 
@@ -28,56 +26,19 @@ def listen_helm(message):
     message.react('+1')
 
 
-# get pod
-@respond_to(r'^get\s+(po|pod|pods)\s+(-n|--namespace)\s+(.*)$')
-def mention_get_po(message, arg2, arg3, namespace):
+# kubectl
+@respond_to(r'^kubectl (.*)')
+def mention_kubectl(message, command):
 
-    # kubernetes上で動いているかを環境変数から判断する
-    if os.getenv('KUBERNETES_SERVICE_HOST'):
-        # ServiceAccountの権限で実行する
-        config.load_incluster_config()
-    else:
-        # $HOME/.kube/config から読み込む
-        config.load_kube_config()
+    try:
+        completed_process = subprocess.run('kubectl {}'.format(command),
+                                           shell=True,
+                                           check=True,
+                                           capture_output=True)
+        result_str = completed_process.stdout.decode('utf-8')
 
-    v1 = client.CoreV1Api()
-    ret = v1.list_namespaced_pod(namespace=namespace, watch=False)
+    except subprocess.CalledProcessError as e:
+        result_str = e.stderr.decode('utf-8')
 
-    table = prettytable.PrettyTable()
-    table.field_names = ['name', 'phase']
-    table.align['name'] = 'l'
-    table.align['phase'] = 'l'
-
-    for i in ret.items:
-        table.add_row([i.metadata.name,
-                       i.status.phase
-                       ])
-
-    msg = '```\n' + table.get_string() + '\n```'
-    message.reply(msg)
-
-
-# get ns
-@respond_to(r'^get\s+(ns|namespace|namespaces)$')
-def mention_get_ns(message, arg2):
-
-    # kubernetes上で動いているかを環境変数から判断する
-    if os.getenv('KUBERNETES_SERVICE_HOST'):
-        # ServiceAccountの権限で実行する
-        config.load_incluster_config()
-    else:
-        # $HOME/.kube/config から読み込む
-        config.load_kube_config()
-
-    v1 = client.CoreV1Api()
-    ret = v1.list_namespace(watch=False)
-
-    table = prettytable.PrettyTable()
-    table.field_names = ['name']
-    table.align['name'] = 'l'
-
-    for i in ret.items:
-        table.add_row([i.metadata.name])
-
-    msg = '```\n' + table.get_string() + '\n```'
+    msg = '```\n' + result_str + '```'
     message.reply(msg)
