@@ -62,7 +62,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-namespace: slackbot
+  namespace: slackbot
 ```
 
 ```shell
