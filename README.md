@@ -52,21 +52,21 @@ Podに明示的にServiceAccountを指定しない場合は、Podは稼働する
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: slackbot
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
 subjects:
 - kind: ServiceAccount
   name: default
-roleRef:
-  kind: ClusterRole
-  name: view
-  apiGroup: rbac.authorization.k8s.io
+namespace: slackbot
 ```
 
-
 ```shell
-kubectl apply -f slackbot-rolebinding.yaml -n slackbot
+kubectl apply -f slackbot-clusterrolebinding.yaml -n slackbot
 ```
 
 APIトークンのSecretを作成する。
