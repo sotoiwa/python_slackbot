@@ -107,6 +107,13 @@ spec:
             secretKeyRef:
               key: SLACKBOT_API_TOKEN
               name: slackbot-secret
+        livenessProbe:
+          exec:
+            command:
+              - kubectl
+              - version
+          initialDelaySeconds: 60
+          periodSeconds: 60
 ```
 
 ```shell
