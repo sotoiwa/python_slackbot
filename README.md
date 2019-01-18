@@ -14,8 +14,6 @@ https://slack.com/apps/A0F7YS25R-bots
 必要なモジュールをインストールする。
 
 ```shell
-pip install kubernetes
-pip install prettytable
 pip install slackbot
 ```
 
@@ -36,51 +34,45 @@ python run.py
 イメージをビルドする。
 
 ```shell
-docker build -t sotoiwa540/slackbot:1.0 .
-docker push sotoiwa540/slackbot:1.0
+docker build -t sotoiwa540/slackbot:1.1 .
+docker push sotoiwa540/slackbot:1.1
 ```
 
-ローカルで実行する場合は、`HOME/.kube/config`から認証情報を読み込むが、KubernetesでPodとして実行する場合はServiceAccountの権限で実行するので、ClusterRoleとClusterRoleBindingを作成する。
-NamespaceのデフォルトのServiceAccountにClusterRoleをバインドしているので、Namespace名を適切に設定すること。
+Podをデプロイする専用のNamespaceを作成する。
 
-```yaml
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: slackbot
-rules:
-- apiGroups: [""]
-  resources:
-  - pods
-  - namespaces
-  verbs:
-  - list
+```shell
+kubectl create ns slackbot
 ```
 
+ローカルで実行する場合は、kubectlは`HOME/.kube/config`から認証情報を読み込むが、Kubernetes上でPodとして実行する場合はPodを実行するServiceAccountの権限で実行されるので、適切な権限を与える必要がある。
+
+Podに明示的にServiceAccountを指定しない場合は、Podは稼働するNamespaceの`default`のServiceAccountの権限で実行される。
+
+ここではデフォルトで存在する`view`というClusterRoleを、`default`のServiceAccountに割り当てるRoleBindingを作成する。
+
 ```yaml
-kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
 metadata:
   name: slackbot
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: default
 roleRef:
   kind: ClusterRole
-  name: slackbot
+  name: view
   apiGroup: rbac.authorization.k8s.io
 ```
 
+
 ```shell
-kubectl apply -f slackbot-clusterrole.yaml
-kubectl apply -f slackbot-clusterrolebinding.yaml
+kubectl apply -f slackbot-rolebinding.yaml -n slackbot
 ```
 
 APIトークンのSecretを作成する。
 
 ```shell
-kubectl create secret generic slackbot-secret --from-literal=SLACKBOT_API_TOKEN=hogehoge
+kubectl create secret generic slackbot-secret --from-literal=SLACKBOT_API_TOKEN=hogehoge -n slackbot
 ```
 
 Deploymentを作成する。
@@ -107,7 +99,7 @@ spec:
     spec:
       containers:
       - name: slackbot
-        image: sotoiwa540/slackbot:1.0
+        image: sotoiwa540/slackbot:1.1
         imagePullPolicy: Always
         env:
         - name: SLACKBOT_API_TOKEN
@@ -118,5 +110,5 @@ spec:
 ```
 
 ```shell
-kubectl apply -f slackbot-deployment.yaml
+kubectl apply -f slackbot-deployment.yaml -n slackbot
 ```
