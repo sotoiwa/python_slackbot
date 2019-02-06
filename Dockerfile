@@ -12,3 +12,4 @@ RUN wget https://storage.googleapis.com/kubernetes-release/release/$(wget https:
   && chmod +x /usr/local/bin/kubectl
 
 ENTRYPOINT [ "python", "./run.py" ]
+
