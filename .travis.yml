@@ -1,8 +1,15 @@
+language: minimal
 dist: xenial
 
 script:
-  - docker build -t $DOCKER_USERNAME/slackbot:1.1 .
+- docker build -t $DOCKER_USERNAME/slackbot:1.2 .
 
 after_success:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push $DOCKER_USERNAME/slackbot:1.1
+- if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ]; then
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
+    docker push $DOCKER_USERNAME/slackbot:1.2;
+  fi
+
+notifications:
+  slack:
+    secure: e27sBafiz2YswxuYQDdt91SXqU/YUpmVY9JkUM8uOkvEj7fwM1ibumPVSfYBJ/pg5KSwIBcsbjIRVie2uFhZ/kFL8N3rjLw7UHIEOqh3m3Q9n2yOzcXG2loYyHMrM6CwK8K3oStRwkbGrwLJHWhRsF9019okEsU2m+Ij+8SZDBlnVAMkBsQKihLFgt45G4E9N/YQT3egKopaTC9So5hXuh9Rx5wPfmE5kH0vydv72WHY3HDxjq7EMDoPytlDfrX06BwV5HY1p3so0PlGQLwpdzQepN67RbcjMLt9VvLmD55/2lcoIGdnr5iUwKyxtO8DNya5PjRXLmIM3zwJsUZY62wPxA3bGHatxnXqonwmzmqk7Kp+0tdsg19F3YhQNB0N3HAnvH5wxtnfXV/5g2Y7zg7Z+/I+mziYpVV/W9SYCgZKqq8hwl6jSWauGe7TZQtOwNmti3Ttk4PmHlNL6ZPzeufZTPgbxkPxqbU9DXjS7p7aFcSmMuykp3R1piDbshwDTdGeK4mEQVwci5LSGJ3MfQdHYha32xVb4hUuAukNz3EPCDLUR7cNIRJjZKn8xSdK6nCPDMQ4bxXQOmVV8uDv0rGpE58eftQau8ZZ+tq/wCNES7GGAneWgrWDyzrEHDixQRfqPnGNul7sLGpf+tyUnH91fJ4NljBgvJ8yctk+yis=
