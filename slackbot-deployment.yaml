@@ -21,9 +21,6 @@ spec:
       - name: slackbot
         image: sotoiwa540/slackbot:1.1
         imagePullPolicy: Always
-        env:
-        - name: SLACKBOT_API_TOKEN
-          valueFrom:
-            secretKeyRef:
-              key: SLACKBOT_API_TOKEN
-              name: slackbot-secret
+        envFrom:
+        - secretRef:
+            name: slackbot-secret

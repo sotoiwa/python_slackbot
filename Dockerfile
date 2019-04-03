@@ -1,11 +1,11 @@
-FROM python:3-alpine
+FROM python:3
 
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./*.py ./
+COPY run.py slackbot_settings.py ./
 COPY ./plugins ./plugins
 
 RUN wget https://storage.googleapis.com/kubernetes-release/release/$(wget https://storage.googleapis.com/kubernetes-release/release/stable.txt -O -)/bin/linux/amd64/kubectl \
