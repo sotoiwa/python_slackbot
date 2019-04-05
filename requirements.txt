@@ -1,6 +1,7 @@
 bs4
 flickrapi
 gokulang
+kubernetes
 lxml
 requests
 slackbot
