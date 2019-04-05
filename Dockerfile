@@ -3,12 +3,8 @@ FROM python:3-alpine
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
-RUN apk add libxml2-dev libxslt-dev
-RUN pip install --no-cache-dir -r requirements.txt
-#RUN apk add --no-cache --virtual=build-deps gcc libc-dev libxml2-dev \
-#  && apk add --no-cache libxslt-dev \
-#  && pip install --no-cache-dir -r requirements.txt \
-#  && apk del build-deps
+RUN apk add --no-cache py3-lxml
+RUN pip install --no-cache-dir -r requirements.txt \
 
 COPY run.py slackbot_settings.py ./
 COPY ./plugins ./plugins
