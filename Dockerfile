@@ -2,7 +2,7 @@ FROM python:3-alpine
 
 WORKDIR /usr/src/app
 
-RUN RUN apk --no-cache add gcc libc-dev libxml2-dev libxslt-dev
+RUN apk --no-cache add gcc libc-dev libxml2-dev libxslt-dev
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
