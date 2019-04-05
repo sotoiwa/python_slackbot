@@ -4,7 +4,7 @@ import os
 import re
 import subprocess
 
-from kubernetes import client, config
+# from kubernetes import client, config
 from slackbot.bot import listen_to
 from slackbot.bot import respond_to
 
@@ -49,7 +49,7 @@ def mention_kubectl(message, kubectl_args):
     }]
     message.reply_webapi('', json.dumps(attachments))
 
-
+"""
 # Pod状況照会
 @respond_to('(Pod|pod|ポッド|ぽっど)(大丈夫|元気)？')
 def menthon_pod(message, arg1, arg2):
@@ -99,3 +99,4 @@ def menthon_pod(message, arg1, arg2):
         'ts': datetime.datetime.now().strftime('%s')
     }]
     message.send_webapi('', json.dumps(attachments))
+"""
