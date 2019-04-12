@@ -2,12 +2,12 @@ language: minimal
 dist: xenial
 
 script:
-- docker build -t $DOCKER_USERNAME/slackbot:1.2 .
+- docker build -t $DOCKER_USERNAME/slackbot:1.3 .
 
 after_success:
 - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ]; then
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
-    docker push $DOCKER_USERNAME/slackbot:1.2;
+    docker push $DOCKER_USERNAME/slackbot:1.3;
   fi
 
 notifications:

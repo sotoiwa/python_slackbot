@@ -39,11 +39,11 @@ def random_search(keyword):
 @respond_to(r'^(.*)ください')
 def mention_flickr(message, keyword):
 
-    if keyword in ['美女', '美人']:
-        cwd = os.path.abspath(os.path.dirname(__file__))
-        filename = os.path.join(cwd, 'photo1.jpg')
-        message.channel.upload_file(keyword, filename)
-        return
+    # if keyword in ['美女', '美人']:
+    #     cwd = os.path.abspath(os.path.dirname(__file__))
+    #     filename = os.path.join(cwd, 'photo1.jpg')
+    #     message.channel.upload_file(keyword, filename)
+    #     return
 
     # 画像をランダムに一枚選ぶ
     try:
