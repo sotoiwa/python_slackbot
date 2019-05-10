@@ -7,7 +7,6 @@ from slackbot.bot import respond_to
 
 FLICKR_API_KEY = os.environ['FLICKR_API_KEY']
 FLICKR_API_SECRET = os.environ['FLICKR_API_SECRET']
-SLACKBOT_API_TOKEN = os.environ['SLACKBOT_API_TOKEN']
 
 
 # ランダム検索
@@ -39,16 +38,10 @@ def random_search(keyword):
 @respond_to(r'^(.*)ください')
 def mention_flickr(message, keyword):
 
-    # if keyword in ['美女', '美人']:
-    #     cwd = os.path.abspath(os.path.dirname(__file__))
-    #     filename = os.path.join(cwd, 'photo1.jpg')
-    #     message.channel.upload_file(keyword, filename)
-    #     return
-
     # 画像をランダムに一枚選ぶ
     try:
         photo_url = random_search(keyword)
-    except IndexError as e:
+    except (IndexError, KeyError) as e:
         # 写真が見つからなかった場合
         text = 'ごめんなさい、{}はみつかりませんでした。'.format(keyword)
         message.reply(text)

@@ -1,4 +1,3 @@
-import json
 import re
 
 from slackbot.bot import default_reply
