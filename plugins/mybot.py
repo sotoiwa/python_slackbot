@@ -34,5 +34,5 @@ def mention_goodmoring(message):
 
 # ありがとうに応答する
 @respond_to('ありがとう')
-def mention_goodmoring(message):
+def mention_thanks(message):
     message.reply('どういたしまして！')

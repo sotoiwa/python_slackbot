@@ -25,7 +25,7 @@ def mention_all_train(message):
     html = requests.get(url)
     html.raise_for_status()
 
-    soup = BeautifulSoup(html.text, 'lxml')
+    soup = BeautifulSoup(html.text, 'html.parser')
 
     # 遅延情報が含まれたtableを抽出
     trouble_div = soup.find('div', class_='elmTblLstLine trouble')
