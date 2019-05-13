@@ -55,8 +55,6 @@ def mention_help(message):
     }]
     message.send_webapi('', json.dumps(attachments))
 
-    message.reply('こんにちは！')
-
 
 # こんにちはに応答する
 @respond_to('hello', re.IGNORECASE)
