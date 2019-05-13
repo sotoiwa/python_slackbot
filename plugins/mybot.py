@@ -37,7 +37,7 @@ def mention_help(message):
         },
         {
             "title": "Pod大丈夫？",
-            "value": "クラスター上のPodが正常化教えてくれます！"
+            "value": "クラスター上のPodが正常か教えてくれます！"
         },
         {
             "title": "genshijin hogehoge",
