@@ -15,7 +15,7 @@ def default_func(message):
 
 
 # help応答する
-@respond_to('hello', re.IGNORECASE)
+@respond_to('help', re.IGNORECASE)
 def mention_help(message):
 
     fields = [
