@@ -9,8 +9,6 @@ RUN wget -q https://storage.googleapis.com/kubernetes-release/release/$(wget htt
   && mv kubectl /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/kubectl
 
-COPY --from=builder /go/bin/ojichat /usr/local/bin/
-
 COPY run.py slackbot_settings.py ./
 COPY ./plugins ./plugins
 
