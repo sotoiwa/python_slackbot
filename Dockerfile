@@ -1,9 +1,3 @@
-FROM golang:1.12.5-alpine3.9 as builder
-
-WORKDIR /go/src/app
-RUN apk add --update alpine-sdk
-RUN go get -u github.com/greymd/ojichat
-
 FROM python:3-alpine
 
 WORKDIR /usr/src/app
@@ -19,5 +13,7 @@ COPY --from=builder /go/bin/ojichat /usr/local/bin/
 
 COPY run.py slackbot_settings.py ./
 COPY ./plugins ./plugins
+
+COPY ojichat /usr/local/bin
 
 ENTRYPOINT [ "python", "./run.py" ]
